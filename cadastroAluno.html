@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APE Aluno - Área de Estudos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Supabase CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-[#F1F5F9] text-[#1E293B] h-screen flex overflow-hidden">
+    <div id="auth-container" class="fixed inset-0 z-[100] login-gradient flex items-center justify-center p-4 overflow-y-auto">
+        <div class="w-full max-w-lg my-auto">
+<div class="text-center mb-8 mt-8">
+                <div class="inline-flex bg-sky-500 p-3 rounded-2xl text-white mb-4 shadow-xl shadow-sky-900/20">
+                    <i data-lucide="graduation-cap" size="32"></i>
+                </div>
+                <h1 class="text-3xl font-black text-white tracking-tighter italic">APE ALUNO</h1>
+                <p class="text-indigo-200 font-medium mt-2">Sua plataforma de estudos gratuita</p>
+            </div>
+
+            <!-- Card de Cadastro -->
+            <div id="signup-card" class="bg-white rounded-[2.5rem] p-8 shadow-2xl space-y-6  animate-fade-in">
+                <div class="space-y-2">
+                    <h2 class="text-xl font-black text-slate-900">Seu Futuro Começa Aqui</h2>
+                    <p class="text-slate-500 text-sm font-medium">Preencha seus dados e junte-se aos voluntários.</p>
+                </div>
+
+                <form class="space-y-4" onsubmit="handleSignupReal(event)">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="space-y-1.5 md:col-span-2">
+                            <label class="text-xs font-black text-slate-400 uppercase tracking-wider ml-1">Nome Completo</label>
+                            <div class="relative">
+                                <i data-lucide="user" class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300" size="18"></i>
+                                <input type="text" required placeholder="João Silva" class="w-full bg-slate-50 border border-slate-100 rounded-2xl py-3 pl-10 pr-4 text-sm focus:ring-4 focus:ring-sky-500/10 outline-none transition-all">
+                            </div>
+                        </div>
+
+                        <div class="space-y-1.5">
+                            <label class="text-xs font-black text-slate-400 uppercase tracking-wider ml-1">Série / Ano</label>
+                            <div class="relative">
+                                <i data-lucide="book" class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300" size="18"></i>
+                                <input type="text" required placeholder="Ex: 3º Ano" class="w-full bg-slate-50 border border-slate-100 rounded-2xl py-3 pl-10 pr-4 text-sm focus:ring-4 focus:ring-sky-500/10 outline-none transition-all">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-1.5">
+                        <label class="text-xs font-black text-slate-400 uppercase tracking-wider ml-1">E-mail</label>
+                        <div class="relative">
+                            <i data-lucide="mail" class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300" size="18"></i>
+                            <input type="email" required placeholder="seu@email.com" class="w-full bg-slate-50 border border-slate-100 rounded-2xl py-3 pl-10 pr-4 text-sm focus:ring-4 focus:ring-sky-500/10 outline-none transition-all">
+                        </div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <label class="text-xs font-black text-slate-400 uppercase tracking-wider ml-1">Em qual matéria você tem mais dificuldade?</label>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                            <div class="relative">
+                                <input type="radio" name="difficulty" id="math" value="matematica" class="difficulty-card hidden" required>
+                                <label for="math" class="flex flex-col items-center justify-center p-3 rounded-2xl border-2 border-slate-100 bg-slate-50 cursor-pointer hover:border-sky-200 transition-all text-slate-600">
+                                    <i data-lucide="calculator" size="20" class="mb-1"></i>
+                                    <span class="text-[10px] font-black uppercase text-center leading-tight">Matemática</span>
+                                </label>
+                            </div>
+                            <div class="relative">
+                                <input type="radio" name="difficulty" id="port" value="portugues" class="difficulty-card hidden">
+                                <label for="port" class="flex flex-col items-center justify-center p-3 rounded-2xl border-2 border-slate-100 bg-slate-50 cursor-pointer hover:border-sky-200 transition-all text-slate-600">
+                                    <i data-lucide="languages" size="20" class="mb-1"></i>
+                                    <span class="text-[10px] font-black uppercase text-center leading-tight">Português</span>
+                                </label>
+                            </div>
+                            <div class="relative">
+                                <input type="radio" name="difficulty" id="eng" value="ingles" class="difficulty-card hidden">
+                                <label for="eng" class="flex flex-col items-center justify-center p-3 rounded-2xl border-2 border-slate-100 bg-slate-50 cursor-pointer hover:border-sky-200 transition-all text-slate-600">
+                                    <i data-lucide="globe" size="20" class="mb-1"></i>
+                                    <span class="text-[10px] font-black uppercase text-center leading-tight">Inglês</span>
+                                </label>
+                            </div>
+                            <div class="relative">
+                                <input type="radio" name="difficulty" id="write" value="redacao" class="difficulty-card hidden">
+                                <label for="write" class="flex flex-col items-center justify-center p-3 rounded-2xl border-2 border-slate-100 bg-slate-50 cursor-pointer hover:border-sky-200 transition-all text-slate-600">
+                                    <i data-lucide="pen-tool" size="20" class="mb-1"></i>
+                                    <span class="text-[10px] font-black uppercase text-center leading-tight">Redação</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="space-y-1.5">
+                            <label class="text-xs font-black text-slate-400 uppercase tracking-wider ml-1">Senha</label>
+                            <input type="password" required placeholder="••••••••" class="w-full bg-slate-50 border border-slate-100 rounded-2xl py-3 px-4 text-sm focus:ring-4 focus:ring-sky-500/10 outline-none transition-all">
+                        </div>
+                        <div class="space-y-1.5">
+                            <label class="text-xs font-black text-slate-400 uppercase tracking-wider ml-1">Confirmar Senha</label>
+                            <input type="password" required placeholder="••••••••" class="w-full bg-slate-50 border border-slate-100 rounded-2xl py-3 px-4 text-sm focus:ring-4 focus:ring-sky-500/10 outline-none transition-all">
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-2 px-1 pt-2">
+                        <input type="checkbox" required id="terms" class="mt-1 w-4 h-4 rounded border-slate-300 text-sky-600 focus:ring-sky-500">
+                        <label for="terms" class="text-[10px] font-bold text-slate-500 leading-tight">Concordo com os Termos de Uso e Política de Privacidade da APE.</label>
+                    </div>
+
+                    <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-white py-4 rounded-2xl font-black shadow-lg shadow-green-200 transition-all active:scale-[0.98]">
+                        CRIAR MINHA CONTA GRÁTIS
+                    </button>
+                </form>
+
+                <div class="pt-4 text-center border-t border-slate-50">
+                    <p class="text-xs font-bold text-slate-400">Já tem conta? <a href="loginAluno.html" class="text-sky-600 hover:underline inline-block">Entre aqui</a></p>
+                </div>
+            </div>
+            
+            <p class="text-center text-indigo-300 text-[10px] mt-8 font-bold uppercase tracking-widest opacity-60 mb-8">© 2024 APE - Apoio Pedagógico Estruturado</p>
+        
+        </div>
+    </div>
+    <script src="js/supabase.js"></script>
+    <script src="js/aluno-auth.js"></script>
+</body>
+</html>

@@ -7,221 +7,53 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
-    <style>
-        body { font-family: 'Inter', sans-serif; }
-        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
-        .active-nav { background: #2563eb; color: white; box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.2); }
-        .hidden-section { display: none !important; }
-        
-        .login-gradient {
-            background: radial-gradient(circle at top right, #1e293b, #0f172a);
-        }
-        
-        .animate-fade-in {
-            animation: fadeIn 0.3s ease-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .discipline-card:checked + label {
-            border-color: #2563eb;
-            background-color: #eff6ff;
-            color: #1e40af;
-        }
-
-        /* Estilos do Painel de Aulas */
-        .class-card {
-            background: #ffffff;
-            border-left: 6px solid #2563eb;
-            transition: all 0.2s;
-        }
-        .class-card:hover {
-            transform: translateX(4px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-        }
-    </style>
+    <!-- Supabase CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="bg-[#F1F5F9] text-[#1E293B] h-screen flex overflow-hidden">
+    <div id="app-wrapper" class=" w-full h-full flex">
+        <!-- Sidebar Overlay (mobile) -->
+        <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-slate-900/40 z-20 hidden transition-opacity duration-300"></div>
 
-    <!-- ECRÃ DE AUTENTICAÇÃO -->
-    <div id="auth-container" class="fixed inset-0 z-[100] login-gradient flex items-center justify-center p-4">
-        <div class="w-full max-w-lg">
-            <div class="text-center mb-8">
-                <div class="inline-flex bg-blue-600 p-3 rounded-2xl text-white mb-4 shadow-xl shadow-blue-900/20">
-                    <i data-lucide="trending-up" size="32"></i>
-                </div>
-                <h1 class="text-3xl font-black text-white tracking-tighter italic">APE VOLUNTÁRIO</h1>
-                <p class="text-slate-400 font-medium mt-2">Portal de Gestão Pedagógica</p>
-            </div>
-
-            <!-- Card de Login -->
-            <div id="login-card" class="bg-white rounded-[2.5rem] p-8 shadow-2xl space-y-6 animate-fade-in max-w-md mx-auto">
-                <div class="space-y-2">
-                    <h2 class="text-xl font-black text-slate-900">Bem-vindo de volta!</h2>
-                    <p class="text-slate-500 text-sm font-medium">Insira as suas credenciais para aceder ao painel.</p>
-                </div>
-
-                <form class="space-y-4" onsubmit="handleLogin(event)">
-                    <div class="space-y-1.5">
-                        <label class="text-xs font-black text-slate-400 uppercase tracking-wider ml-1">E-mail Institucional</label>
-                        <div class="relative">
-                            <i data-lucide="mail" class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300" size="18"></i>
-                            <input type="email" required placeholder="exemplo@ape.org" class="w-full bg-slate-50 border border-slate-100 rounded-2xl py-3.5 pl-12 pr-4 text-sm focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all">
-                        </div>
-                    </div>
-
-                    <div class="space-y-1.5">
-                        <div class="flex justify-between items-center px-1">
-                            <label class="text-xs font-black text-slate-400 uppercase tracking-wider">Palavra-passe</label>
-                            <a href="#" class="text-[10px] font-bold text-blue-600 hover:underline">Esqueceu-se?</a>
-                        </div>
-                        <div class="relative">
-                            <i data-lucide="lock" class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300" size="18"></i>
-                            <input type="password" required placeholder="••••••••" class="w-full bg-slate-50 border border-slate-100 rounded-2xl py-3.5 pl-12 pr-4 text-sm focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all">
-                        </div>
-                    </div>
-
-                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-4 rounded-2xl font-black shadow-lg shadow-blue-200 transition-all active:scale-[0.98] flex items-center justify-center gap-2">
-                        ENTRAR NO SISTEMA <i data-lucide="arrow-right" size="18"></i>
-                    </button>
-                </form>
-
-                <div class="pt-4 text-center border-t border-slate-50">
-                    <p class="text-xs font-bold text-slate-400">Novo por aqui? <button onclick="toggleAuth('signup')" class="text-blue-600 hover:underline">Crie a sua conta de voluntário</button></p>
-                </div>
-            </div>
-
-            <!-- Card de Cadastro -->
-            <div id="signup-card" class="bg-white rounded-[2.5rem] p-8 shadow-2xl space-y-6 hidden-section animate-fade-in">
-                <div class="space-y-2">
-                    <h2 class="text-xl font-black text-slate-900">Junte-se à Causa</h2>
-                    <p class="text-slate-500 text-sm font-medium">Preencha os dados para iniciar a sua jornada.</p>
-                </div>
-
-                <form class="space-y-4" onsubmit="handleLogin(event)">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="space-y-1.5">
-                            <label class="text-xs font-black text-slate-400 uppercase tracking-wider ml-1">Nome Completo</label>
-                            <div class="relative">
-                                <i data-lucide="user" class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300" size="18"></i>
-                                <input type="text" required placeholder="Thiago Silva" class="w-full bg-slate-50 border border-slate-100 rounded-2xl py-3 pl-10 pr-4 text-sm focus:ring-4 focus:ring-blue-500/10 outline-none transition-all">
-                            </div>
-                        </div>
-
-                        <div class="space-y-1.5">
-                            <label class="text-xs font-black text-slate-400 uppercase tracking-wider ml-1">E-mail</label>
-                            <div class="relative">
-                                <i data-lucide="mail" class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300" size="18"></i>
-                                <input type="email" required placeholder="seu@email.com" class="w-full bg-slate-50 border border-slate-100 rounded-2xl py-3 pl-10 pr-4 text-sm focus:ring-4 focus:ring-blue-500/10 outline-none transition-all">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="space-y-3">
-                        <label class="text-xs font-black text-slate-400 uppercase tracking-wider ml-1">Em qual disciplina você deseja lecionar?</label>
-                        <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
-                            <div class="relative">
-                                <input type="radio" name="discipline" id="math" value="matematica" class="discipline-card hidden" required>
-                                <label for="math" class="flex flex-col items-center justify-center p-3 rounded-2xl border-2 border-slate-100 bg-slate-50 cursor-pointer hover:border-blue-200 transition-all">
-                                    <i data-lucide="calculator" size="20" class="mb-1"></i>
-                                    <span class="text-[10px] font-black uppercase">Matemática</span>
-                                </label>
-                            </div>
-                            <div class="relative">
-                                <input type="radio" name="discipline" id="port" value="portugues" class="discipline-card hidden">
-                                <label for="port" class="flex flex-col items-center justify-center p-3 rounded-2xl border-2 border-slate-100 bg-slate-50 cursor-pointer hover:border-blue-200 transition-all">
-                                    <i data-lucide="languages" size="20" class="mb-1"></i>
-                                    <span class="text-[10px] font-black uppercase">Português</span>
-                                </label>
-                            </div>
-                            <div class="relative">
-                                <input type="radio" name="discipline" id="write" value="redacao" class="discipline-card hidden">
-                                <label for="write" class="flex flex-col items-center justify-center p-3 rounded-2xl border-2 border-slate-100 bg-slate-50 cursor-pointer hover:border-blue-200 transition-all">
-                                    <i data-lucide="pen-tool" size="20" class="mb-1"></i>
-                                    <span class="text-[10px] font-black uppercase">Redação</span>
-                                </label>
-                            </div>
-                            <div class="relative">
-                                <input type="radio" name="discipline" id="eng" value="ingles" class="discipline-card hidden">
-                                <label for="eng" class="flex flex-col items-center justify-center p-3 rounded-2xl border-2 border-slate-100 bg-slate-50 cursor-pointer hover:border-blue-200 transition-all">
-                                    <i data-lucide="globe" size="20" class="mb-1"></i>
-                                    <span class="text-[10px] font-black uppercase">Inglês</span>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="space-y-1.5">
-                            <label class="text-xs font-black text-slate-400 uppercase tracking-wider ml-1">Palavra-passe</label>
-                            <input type="password" required placeholder="••••••••" class="w-full bg-slate-50 border border-slate-100 rounded-2xl py-3 px-4 text-sm focus:ring-4 focus:ring-blue-500/10 outline-none transition-all">
-                        </div>
-                        <div class="space-y-1.5">
-                            <label class="text-xs font-black text-slate-400 uppercase tracking-wider ml-1">Confirmar</label>
-                            <input type="password" required placeholder="••••••••" class="w-full bg-slate-50 border border-slate-100 rounded-2xl py-3 px-4 text-sm focus:ring-4 focus:ring-blue-500/10 outline-none transition-all">
-                        </div>
-                    </div>
-
-                    <div class="flex items-start gap-2 px-1 pt-2">
-                        <input type="checkbox" required id="terms" class="mt-1 w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500">
-                        <label for="terms" class="text-[10px] font-bold text-slate-500 leading-tight">Concordo com os Termos de Voluntariado e Política de Privacidade da APE.</label>
-                    </div>
-
-                    <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white py-4 rounded-2xl font-black shadow-lg shadow-green-100 transition-all active:scale-[0.98]">
-                        FINALIZAR REGISTO
-                    </button>
-                </form>
-
-                <div class="pt-4 text-center border-t border-slate-50">
-                    <p class="text-xs font-bold text-slate-400">Já tem conta? <button onclick="toggleAuth('login')" class="text-blue-600 hover:underline">Inicie sessão</button></p>
-                </div>
-            </div>
-            
-            <p class="text-center text-slate-500 text-[10px] mt-8 font-bold uppercase tracking-widest opacity-50">© 2024 APE - Apoio Pedagógico Estruturado</p>
-        </div>
-    </div>
-
-    <!-- MAIN APP WRAPPER -->
-    <div id="app-wrapper" class="hidden-section w-full h-full flex">
         <!-- Sidebar -->
-        <aside class="w-64 bg-[#0F172A] text-white flex flex-col shadow-2xl shrink-0">
-            <div class="p-6 border-b border-slate-800">
+        <aside id="sidebar" class="w-64 bg-[#0F172A] text-white flex flex-col shadow-2xl shrink-0 z-30 fixed md:static inset-y-0 left-0 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out">
+            <div class="p-6 border-b border-slate-800 flex items-center justify-between">
                 <div class="flex items-center gap-2">
                     <div class="bg-blue-600 p-1.5 rounded-lg text-white">
                         <i data-lucide="trending-up" size="20"></i>
                     </div>
                     <span class="text-xl font-black italic tracking-tighter">APE VOLUNTÁRIO</span>
                 </div>
+                <!-- Close Button on Mobile -->
+                <button onclick="toggleSidebar()" class="p-1 rounded-lg hover:bg-slate-800 text-slate-400 md:hidden">
+                    <i data-lucide="x" size="20"></i>
+                </button>
             </div>
 
             <nav class="flex-1 p-4 space-y-2 overflow-y-auto custom-scrollbar">
                 <div class="pb-4">
                     <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-4 mb-2">Principal</p>
-                    <button onclick="showSection('dashboard')" id="nav-dashboard" class="nav-item active-nav w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all group">
+                    <button onclick="showSection('dashboard'); closeSidebarOnMobile()" id="nav-dashboard" class="nav-item active-nav w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all group">
                         <i data-lucide="layout-dashboard" size="18"></i> Dashboard
                     </button>
-                    <button onclick="showSection('agenda')" id="nav-agenda" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-slate-400 hover:text-white hover:bg-slate-800 transition-all group">
+                    <button onclick="showSection('agenda'); closeSidebarOnMobile()" id="nav-agenda" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-slate-400 hover:text-white hover:bg-slate-800 transition-all group">
                         <i data-lucide="calendar" size="18"></i> Próximas Aulas
                     </button>
-                    <button onclick="showSection('perfil')" id="nav-perfil" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-slate-400 hover:text-white hover:bg-slate-800 transition-all group">
+                    <button onclick="showSection('perfil'); closeSidebarOnMobile()" id="nav-perfil" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-slate-400 hover:text-white hover:bg-slate-800 transition-all group">
                         <i data-lucide="user" size="18"></i> Meu Perfil
                     </button>
                 </div>
 
                 <div class="pb-4">
                     <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-4 mb-2">Gestão Pedagógica</p>
-                    <button onclick="showSection('cadastrar-aula')" id="nav-cadastrar-aula" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-slate-400 hover:text-white hover:bg-slate-800 transition-all group">
+                    <button onclick="showSection('cadastrar-aula'); closeSidebarOnMobile()" id="nav-cadastrar-aula" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-slate-400 hover:text-white hover:bg-slate-800 transition-all group">
                         <i data-lucide="video" size="18"></i> Cadastrar Aula
                     </button>
-                    <button onclick="showSection('quiz')" id="nav-quiz" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-slate-400 hover:text-white hover:bg-slate-800 transition-all group">
+                    <button onclick="showSection('quiz'); closeSidebarOnMobile()" id="nav-quiz" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-slate-400 hover:text-white hover:bg-slate-800 transition-all group">
                         <i data-lucide="help-circle" size="18"></i> Criar Quiz
                     </button>
-                    <button onclick="showSection('material')" id="nav-material" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-slate-400 hover:text-white hover:bg-slate-800 transition-all group">
+                    <button onclick="showSection('material'); closeSidebarOnMobile()" id="nav-material" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-slate-400 hover:text-white hover:bg-slate-800 transition-all group">
                         <i data-lucide="file-plus" size="18"></i> Adicionar Material
                     </button>
                 </div>
@@ -235,15 +67,20 @@
         </aside>
 
         <!-- Main Content -->
-        <div class="flex-1 flex flex-col overflow-hidden">
-            <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-8 shrink-0">
-                <div class="relative w-96">
+        <div class="flex-1 flex flex-col overflow-hidden relative">
+            <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 md:px-8 shrink-0 z-10 sticky top-0">
+                <!-- Hamburger Menu Button -->
+                <button onclick="toggleSidebar()" class="p-2 rounded-xl hover:bg-slate-100 text-slate-600 md:hidden mr-2">
+                    <i data-lucide="menu" size="24"></i>
+                </button>
+
+                <div class="relative w-96 hidden md:block">
                     <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size="16"></i>
                     <input type="text" placeholder="Pesquisar..." class="w-full bg-slate-50 border-none rounded-lg py-2 pl-10 pr-4 text-sm focus:ring-2 focus:ring-blue-500/20">
                 </div>
-                <div class="flex items-center gap-3">
+                <div class="flex items-center gap-3 ml-auto">
                     <div class="text-right">
-                        <p class="text-sm font-bold leading-none">Prof. Thiago Silva</p>
+                        <p id="header-username" class="text-sm font-bold leading-none">Prof. Thiago Silva</p>
                         <p class="text-[10px] text-green-600 font-bold uppercase mt-1">Ativo Agora</p>
                     </div>
                     <img id="header-avatar" src="https://api.dicebear.com/7.x/avataaars/svg?seed=Thiago" class="w-10 h-10 rounded-xl border bg-slate-100 object-cover">
@@ -257,7 +94,7 @@
                     <div id="section-dashboard" class="animate-fade-in">
                         <div class="flex justify-between items-end mb-8">
                             <div>
-                                <h1 class="text-3xl font-black text-slate-900 tracking-tight">Olá, Thiago! 👋</h1>
+                                <h1 id="dashboard-welcome" class="text-3xl font-black text-slate-900 tracking-tight">Olá, Thiago! 👋</h1>
                                 <p class="text-slate-500 font-medium">Resumo do seu impacto pedagógico.</p>
                             </div>
                         </div>
@@ -287,7 +124,7 @@
                     </div>
 
                     <!-- SEÇÃO: CADASTRAR AULA (Integrado do seu código) -->
-                    <div id="section-cadastrar-aula" class="hidden-section animate-fade-in">
+                    <div id="section-cadastrar-aula" class=" animate-fade-in">
                         <div class="bg-white rounded-[2.5rem] p-8 border shadow-sm">
                             <div class="mb-8">
                                 <h2 class="text-2xl font-black text-slate-900">🔴 Cadastrar Nova Aula</h2>
@@ -348,7 +185,7 @@
                     </div>
 
                     <!-- SEÇÃO: PRÓXIMAS AULAS / AGENDA -->
-                    <div id="section-agenda" class="hidden-section animate-fade-in">
+                    <div id="section-agenda" class=" animate-fade-in">
                         <div class="flex items-center justify-between mb-8">
                             <h2 class="text-2xl font-black text-slate-900">📅 Minha Agenda Pedagógica</h2>
                             <button onclick="showSection('cadastrar-aula')" class="bg-blue-600 text-white px-4 py-2 rounded-xl text-sm font-bold">+ Nova Aula</button>
@@ -363,12 +200,18 @@
                     </div>
 
                     <!-- SEÇÃO: QUIZ -->
-                    <div id="section-quiz" class="hidden-section animate-fade-in">
+                    <div id="section-quiz" class=" animate-fade-in">
                         <div class="bg-white rounded-[2.5rem] border p-8 shadow-sm">
                             <div class="flex items-center justify-between mb-8">
                                 <h2 class="text-2xl font-black">Criar Novo Quiz</h2>
                                 <button onclick="salvarQuiz()" class="px-6 py-2.5 rounded-xl font-bold bg-green-600 text-white shadow-lg shadow-green-100">Guardar Quiz</button>
                             </div>
+                            
+                            <div class="mb-6">
+                                <label class="text-xs font-black text-slate-400 uppercase tracking-wider ml-1">Título do Quiz</label>
+                                <input type="text" id="quiz-titulo" placeholder="Ex: Simulado de Matemática" class="w-full mt-1 bg-slate-50 border border-slate-100 rounded-2xl py-3.5 px-4 font-bold outline-none focus:ring-2 focus:ring-blue-500/20" required>
+                            </div>
+
                             <div id="questions-container" class="space-y-6">
                                 <div class="p-6 bg-slate-50 rounded-2xl border">
                                     <div class="flex items-start gap-4 mb-4">
@@ -379,10 +222,22 @@
                                         </label>
                                     </div>
                                     <div class="grid grid-cols-2 gap-3">
-                                        <input type="text" placeholder="Opção A" class="p-3 rounded-lg border border-slate-100 bg-white text-sm outline-none">
-                                        <input type="text" placeholder="Opção B" class="p-3 rounded-lg border border-slate-100 bg-white text-sm outline-none">
-                                        <input type="text" placeholder="Opção C" class="p-3 rounded-lg border border-slate-100 bg-white text-sm outline-none">
-                                        <input type="text" placeholder="Opção D" class="p-3 rounded-lg border border-slate-100 bg-white text-sm outline-none">
+                                        <div class="flex items-center gap-2 p-2 rounded-lg border border-slate-100 bg-white">
+                                            <input type="radio" name="q1_correct" value="0" class="w-4 h-4 text-blue-600 cursor-pointer" required>
+                                            <input type="text" placeholder="Opção A" class="w-full text-sm outline-none bg-transparent">
+                                        </div>
+                                        <div class="flex items-center gap-2 p-2 rounded-lg border border-slate-100 bg-white">
+                                            <input type="radio" name="q1_correct" value="1" class="w-4 h-4 text-blue-600 cursor-pointer" required>
+                                            <input type="text" placeholder="Opção B" class="w-full text-sm outline-none bg-transparent">
+                                        </div>
+                                        <div class="flex items-center gap-2 p-2 rounded-lg border border-slate-100 bg-white">
+                                            <input type="radio" name="q1_correct" value="2" class="w-4 h-4 text-blue-600 cursor-pointer" required>
+                                            <input type="text" placeholder="Opção C" class="w-full text-sm outline-none bg-transparent">
+                                        </div>
+                                        <div class="flex items-center gap-2 p-2 rounded-lg border border-slate-100 bg-white">
+                                            <input type="radio" name="q1_correct" value="3" class="w-4 h-4 text-blue-600 cursor-pointer" required>
+                                            <input type="text" placeholder="Opção D" class="w-full text-sm outline-none bg-transparent">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -393,7 +248,7 @@
                     </div>
 
                     <!-- SEÇÃO: MATERIAL DE APOIO -->
-                    <div id="section-material" class="hidden-section animate-fade-in">
+                    <div id="section-material" class=" animate-fade-in">
                         <div class="bg-white rounded-[2.5rem] p-8 border shadow-sm">
                             <div class="mb-8">
                                 <h2 class="text-2xl font-black text-slate-900">📚 Material de Apoio</h2>
@@ -420,7 +275,7 @@
                                     <input type="file" id="material-arquivo" accept=".pdf,video/mp4,video/x-m4v,video/*" required class="w-full bg-slate-50 border border-slate-100 rounded-2xl py-3.5 px-4 text-sm focus:ring-4 focus:ring-blue-500/10 outline-none transition-all file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-bold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100">
                                 </div>
 
-                                <div id="container-link" class="space-y-1.5 hidden-section">
+                                <div id="container-link" class="space-y-1.5 ">
                                     <label class="text-xs font-black text-slate-400 uppercase tracking-wider ml-1">Link do YouTube</label>
                                     <div class="relative">
                                         <i data-lucide="youtube" class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300" size="18"></i>
@@ -428,7 +283,7 @@
                                     </div>
                                 </div>
 
-                                <div id="container-quiz" class="space-y-1.5 hidden-section">
+                                <div id="container-quiz" class="space-y-1.5 ">
                                     <label class="text-xs font-black text-slate-400 uppercase tracking-wider ml-1">Selecione o Quiz</label>
                                     <div class="relative">
                                         <i data-lucide="help-circle" class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300" size="18"></i>
@@ -454,7 +309,7 @@
                     </div>
 
                     <!-- SEÇÃO: MEU PERFIL -->
-                    <div id="section-perfil" class="hidden-section animate-fade-in">
+                    <div id="section-perfil" class=" animate-fade-in">
                         <div class="bg-white rounded-[2.5rem] p-8 border shadow-sm max-w-3xl mx-auto">
                             <div class="flex flex-col items-center mb-8">
                                 <div class="relative group cursor-pointer mb-4">
@@ -464,7 +319,7 @@
                                         <input type="file" id="upload-foto" accept="image/*" class="hidden" onchange="atualizarFotoPerfil(event)">
                                     </label>
                                 </div>
-                                <h2 class="text-3xl font-black text-slate-900">Prof. Thiago Silva</h2>
+                                <h2 id="perfil-nome-titulo" class="text-3xl font-black text-slate-900">Prof. Thiago Silva</h2>
                                 <p class="text-slate-500 font-bold uppercase tracking-widest text-xs mt-1">Voluntário Ativo</p>
                             </div>
 
@@ -472,21 +327,23 @@
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div class="space-y-1.5">
                                         <label class="text-xs font-black text-slate-400 uppercase tracking-wider ml-1">Nome Completo</label>
-                                        <input type="text" value="Thiago Silva" required class="w-full bg-slate-50 border border-slate-100 rounded-2xl py-3 px-4 text-sm focus:ring-4 focus:ring-blue-500/10 outline-none transition-all">
+                                        <input type="text" id="perfil-nome" value="Thiago Silva" required class="w-full bg-slate-50 border border-slate-100 rounded-2xl py-3 px-4 text-sm focus:ring-4 focus:ring-blue-500/10 outline-none transition-all">
                                     </div>
                                     <div class="space-y-1.5">
                                         <label class="text-xs font-black text-slate-400 uppercase tracking-wider ml-1">E-mail Institucional</label>
-                                        <input type="email" value="thiago@ape.org" disabled class="w-full bg-slate-100 border border-slate-100 rounded-2xl py-3 px-4 text-sm text-slate-500 cursor-not-allowed">
+                                        <input type="email" id="perfil-email" value="thiago@ape.org" disabled class="w-full bg-slate-100 border border-slate-100 rounded-2xl py-3 px-4 text-sm text-slate-500 cursor-not-allowed">
                                     </div>
                                 </div>
 
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div class="space-y-1.5">
                                         <label class="text-xs font-black text-slate-400 uppercase tracking-wider ml-1">Disciplina Principal</label>
-                                        <select class="w-full bg-slate-50 border border-slate-100 rounded-2xl py-3 px-4 text-sm focus:ring-4 focus:ring-blue-500/10 outline-none transition-all">
-                                            <option value="Matemática" selected>Matemática</option>
+                                        <select id="perfil-disciplina" class="w-full bg-slate-50 border border-slate-100 rounded-2xl py-3 px-4 text-sm focus:ring-4 focus:ring-blue-500/10 outline-none transition-all">
+                                            <option value="Matemática">Matemática</option>
                                             <option value="Português">Português</option>
                                             <option value="Inglês">Inglês</option>
+                                            <option value="História">História</option>
+                                            <option value="Redação">Redação</option>
                                         </select>
                                     </div>
                                     <div class="space-y-1.5">
@@ -513,7 +370,7 @@
     </div>
 
     <!-- Modal de Sucesso -->
-    <div id="success-modal" class="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-slate-900/60 hidden-section animate-fade-in">
+    <div id="success-modal" class="hidden-section fixed inset-0 z-[200] flex items-center justify-center p-4 bg-slate-900/60 animate-fade-in">
         <div class="bg-white p-8 rounded-[2.5rem] max-w-sm w-full text-center shadow-2xl">
             <div class="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
                 <i data-lucide="check-circle-2" size="48"></i>
@@ -524,284 +381,8 @@
         </div>
     </div>
 
-    <script>
-        // Inicializar ícones
-        lucide.createIcons();
-
-        // Estado Global (Mock do Banco de Dados)
-        let aulasCadastradas = [];
-
-        // Alternar entre Login e Cadastro
-        function toggleAuth(type) {
-            const loginCard = document.getElementById('login-card');
-            const signupCard = document.getElementById('signup-card');
-            
-            if (type === 'signup') {
-                loginCard.classList.add('hidden-section');
-                signupCard.classList.remove('hidden-section');
-            } else {
-                signupCard.classList.add('hidden-section');
-                loginCard.classList.remove('hidden-section');
-            }
-            lucide.createIcons();
-        }
-
-        // Lógica de Login/Cadastro
-        function handleLogin(e) {
-            e.preventDefault();
-            const btn = e.target.querySelector('button');
-            const originalContent = btn.innerHTML;
-            
-            btn.innerHTML = '<div class="w-6 h-6 border-4 border-white/30 border-t-white rounded-full animate-spin mx-auto"></div>';
-            btn.disabled = true;
-
-            setTimeout(() => {
-                document.getElementById('auth-container').classList.add('hidden-section');
-                document.getElementById('app-wrapper').classList.remove('hidden-section');
-                lucide.createIcons();
-            }, 800);
-        }
-
-        // Logout
-        function handleLogout() {
-            document.getElementById('auth-container').classList.remove('hidden-section');
-            document.getElementById('app-wrapper').classList.add('hidden-section');
-            toggleAuth('login');
-        }
-
-        // Navegação de Seções
-        function showSection(sectionId) {
-            // Esconde todas as seções
-            document.getElementById('section-dashboard').classList.add('hidden-section');
-            document.getElementById('section-cadastrar-aula').classList.add('hidden-section');
-            document.getElementById('section-agenda').classList.add('hidden-section');
-            document.getElementById('section-quiz').classList.add('hidden-section');
-            document.getElementById('section-material').classList.add('hidden-section');
-            document.getElementById('section-perfil').classList.add('hidden-section');
-            
-            // Mostra a selecionada
-            document.getElementById('section-' + sectionId).classList.remove('hidden-section');
-            
-            // Atualiza navegação
-            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active-nav'));
-            document.querySelectorAll('.nav-item').forEach(i => {
-                if(i.id === 'nav-' + sectionId) i.classList.add('active-nav');
-            });
-
-            // Se for agenda, renderiza
-            if(sectionId === 'agenda') renderizarAgenda();
-            
-            lucide.createIcons();
-        }
-
-        // --- LÓGICA DE GESTÃO DE AULAS ---
-
-        function handleSalvarAula(e) {
-            e.preventDefault();
-            
-            const novaAula = {
-                id: Date.now(),
-                materia: document.getElementById('aula-materia').value,
-                titulo: document.getElementById('aula-titulo').value,
-                data: document.getElementById('aula-data').value,
-                inicio: document.getElementById('aula-inicio').value,
-                fim: document.getElementById('aula-fim').value,
-                meet: document.getElementById('aula-meet').value,
-                descricao: document.getElementById('aula-descricao').value
-            };
-
-            aulasCadastradas.push(novaAula);
-            
-            // Feedback Visual
-            showSuccessModal("Aula agendada com sucesso! Ela já aparece na sua agenda pedagógica.");
-            
-            // Reset Form
-            e.target.reset();
-            
-            // Atualizar Stats Dashboard
-            document.getElementById('stat-classes').innerText = aulasCadastradas.length;
-        }
-
-        function renderizarAgenda() {
-            const container = document.getElementById('lista-aulas-container');
-            
-            if (aulasCadastradas.length === 0) {
-                container.innerHTML = `
-                    <div class="text-center py-20 bg-white rounded-[2.5rem] border border-dashed">
-                        <p class="text-slate-400 font-medium">Nenhuma aula agendada no momento.</p>
-                    </div>
-                `;
-                return;
-            }
-
-            container.innerHTML = aulasCadastradas.map(aula => `
-                <div class="class-card p-6 rounded-3xl shadow-sm border border-slate-100 flex flex-col md:flex-row md:items-center justify-between gap-4 animate-fade-in">
-                    <div class="flex items-center gap-4">
-                        <div class="p-3 bg-blue-50 text-blue-600 rounded-2xl">
-                            <i data-lucide="${getIconForMateria(aula.materia)}" size="24"></i>
-                        </div>
-                        <div>
-                            <span class="text-[10px] font-black uppercase text-blue-600 tracking-widest">${aula.materia}</span>
-                            <h4 class="font-bold text-slate-900">${aula.titulo}</h4>
-                            <div class="flex gap-3 mt-1">
-                                <span class="text-xs text-slate-500 flex items-center gap-1"><i data-lucide="calendar" size="12"></i> ${formatarData(aula.data)}</span>
-                                <span class="text-xs text-slate-500 flex items-center gap-1"><i data-lucide="clock" size="12"></i> ${aula.inicio} - ${aula.fim}</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <a href="${aula.meet}" target="_blank" class="flex-1 md:flex-none text-center bg-blue-600 text-white px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-blue-700 transition-all">
-                            ACESSAR MEET
-                        </a>
-                        <button onclick="removerAula(${aula.id})" class="p-2.5 text-red-400 hover:bg-red-50 rounded-xl transition-all">
-                            <i data-lucide="trash-2" size="20"></i>
-                        </button>
-                    </div>
-                </div>
-            `).join('');
-            
-            lucide.createIcons();
-        }
-
-        function removerAula(id) {
-            aulasCadastradas = aulasCadastradas.filter(a => a.id !== id);
-            renderizarAgenda();
-            document.getElementById('stat-classes').innerText = aulasCadastradas.length;
-        }
-
-        function getIconForMateria(materia) {
-            const map = {
-                'Matemática': 'calculator',
-                'Português': 'languages',
-                'Inglês': 'globe',
-                'História': 'landmark',
-                'Redação': 'pen-tool'
-            };
-            return map[materia] || 'book-open';
-        }
-
-        function formatarData(dataStr) {
-            const [ano, mes, dia] = dataStr.split('-');
-            return `${dia}/${mes}/${ano}`;
-        }
-
-        // Modais e Auxiliares
-        function showSuccessModal(msg) {
-            document.getElementById('success-msg').innerText = msg;
-            document.getElementById('success-modal').classList.remove('hidden-section');
-        }
-
-        function closeModal() {
-            document.getElementById('success-modal').classList.add('hidden-section');
-        }
-
-        // Adicionar Perguntas no Quiz
-        let qCount = 1;
-        function addQuestion() {
-            qCount++;
-            const container = document.getElementById('questions-container');
-            const div = document.createElement('div');
-            div.className = "p-6 bg-slate-50 rounded-2xl border animate-fade-in";
-            div.innerHTML = `
-                <div class="flex items-start gap-4 mb-4">
-                    <input type="text" placeholder="Pergunta ${qCount}" class="flex-1 p-3 rounded-xl border border-slate-200 font-bold outline-none focus:ring-2 focus:ring-blue-500/20">
-                    <label class="cursor-pointer bg-white border border-slate-200 p-3 rounded-xl hover:bg-slate-50 transition-all text-slate-500 hover:text-blue-600 flex items-center justify-center" title="Adicionar Imagem">
-                        <i data-lucide="image" size="20"></i>
-                        <input type="file" accept="image/*" class="hidden">
-                    </label>
-                </div>
-                <div class="grid grid-cols-2 gap-3">
-                    <input type="text" placeholder="Opção A" class="p-3 rounded-lg border border-slate-100 bg-white text-sm outline-none">
-                    <input type="text" placeholder="Opção B" class="p-3 rounded-lg border border-slate-100 bg-white text-sm outline-none">
-                    <input type="text" placeholder="Opção C" class="p-3 rounded-lg border border-slate-100 bg-white text-sm outline-none">
-                    <input type="text" placeholder="Opção D" class="p-3 rounded-lg border border-slate-100 bg-white text-sm outline-none">
-                </div>
-            `;
-            container.appendChild(div);
-            lucide.createIcons();
-        }
-
-        function salvarQuiz() {
-            showSuccessModal("Quiz guardado com sucesso! Agora ele já pode ser selecionado nos materiais de apoio.");
-            
-            // Reseta o form para o estado inicial
-            const container = document.getElementById('questions-container');
-            container.innerHTML = `
-                <div class="p-6 bg-slate-50 rounded-2xl border">
-                    <div class="flex items-start gap-4 mb-4">
-                        <input type="text" placeholder="Pergunta 1" class="flex-1 p-3 rounded-xl border border-slate-200 font-bold outline-none focus:ring-2 focus:ring-blue-500/20">
-                        <label class="cursor-pointer bg-white border border-slate-200 p-3 rounded-xl hover:bg-slate-50 transition-all text-slate-500 hover:text-blue-600 flex items-center justify-center" title="Adicionar Imagem">
-                            <i data-lucide="image" size="20"></i>
-                            <input type="file" accept="image/*" class="hidden">
-                        </label>
-                    </div>
-                    <div class="grid grid-cols-2 gap-3">
-                        <input type="text" placeholder="Opção A" class="p-3 rounded-lg border border-slate-100 bg-white text-sm outline-none">
-                        <input type="text" placeholder="Opção B" class="p-3 rounded-lg border border-slate-100 bg-white text-sm outline-none">
-                        <input type="text" placeholder="Opção C" class="p-3 rounded-lg border border-slate-100 bg-white text-sm outline-none">
-                        <input type="text" placeholder="Opção D" class="p-3 rounded-lg border border-slate-100 bg-white text-sm outline-none">
-                    </div>
-                </div>
-            `;
-            qCount = 1;
-            lucide.createIcons();
-        }
-
-        // Lógica de Material de Apoio
-        function toggleMaterialInput() {
-            const tipo = document.getElementById('material-tipo').value;
-            const cArquivo = document.getElementById('container-arquivo');
-            const cLink = document.getElementById('container-link');
-            const cQuiz = document.getElementById('container-quiz');
-            
-            const iArquivo = document.getElementById('material-arquivo');
-            const iLink = document.getElementById('material-link');
-            const iQuiz = document.getElementById('material-quiz');
-
-            cArquivo.classList.add('hidden-section');
-            cLink.classList.add('hidden-section');
-            if (cQuiz) cQuiz.classList.add('hidden-section');
-            
-            iArquivo.required = false;
-            iLink.required = false;
-            if (iQuiz) iQuiz.required = false;
-
-            if (tipo === 'arquivo') {
-                cArquivo.classList.remove('hidden-section');
-                iArquivo.required = true;
-            } else if (tipo === 'link') {
-                cLink.classList.remove('hidden-section');
-                iLink.required = true;
-            } else if (tipo === 'quiz' && cQuiz) {
-                cQuiz.classList.remove('hidden-section');
-                iQuiz.required = true;
-            }
-        }
-
-        function handleSalvarMaterial(e) {
-            e.preventDefault();
-            showSuccessModal("Material de apoio publicado com sucesso!");
-            e.target.reset();
-            toggleMaterialInput(); // Restaura o estado dos inputs
-        }
-
-        // Lógica de Perfil
-        function atualizarFotoPerfil(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('perfil-foto').src = e.target.result;
-                    document.getElementById('header-avatar').src = e.target.result;
-                };
-                reader.readAsDataURL(file);
-            }
-        }
-
-        function salvarPerfil(e) {
-            e.preventDefault();
-            showSuccessModal("Perfil atualizado com sucesso!");
-        }
-    </script>
+    
+    <script src="js/supabase.js"></script>
+    <script src="js/voluntario.js"></script>
 </body>
 </html>

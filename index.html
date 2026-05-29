@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>APE | Apoio Para Educação</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ================= HEADER ================= -->
+
+    <header>
+        <nav>
+
+            <div class="logo">
+                <img src="imagens/icone1.png" alt="APE" width="35">
+                
+                <h2>Apoio para Educação</h2>
+            </div>
+
+            <div class="menu-toggle" id="menu-toggle">☰</div>
+
+            <ul id="menu-list">
+                <li><a href="#banner">Início</a></li>
+                <li><a href="#sobre">Sobre</a></li>
+                <li><a href="#voluntarios">Voluntários</a></li>
+                <li><a href="#feedback">Feedback</a></li>
+                <li><a href="#como-funciona">Como Funciona</a></li>
+                <li><a href="#materiais">Materiais</a></li>
+                <li><a href="#contato">Contato</a></li>
+            </ul>
+
+        </nav>
+    </header>
+
+
+    <!-- ================= HERO ================= -->
+
+    <section id="banner">
+
+        <div class="hero-overlay"></div>
+
+        <div class="hero-content">
+
+            <span class="tag">✨ Plataforma gratuita para educação</span>
+
+            <h1>
+                Conectando
+                <span class="texto_verde">alunos</span>
+                e
+                <span class="texto_azul">voluntários</span>
+                para transformar vidas.
+            </h1>
+
+            <p>
+                O APE ajuda estudantes a encontrarem apoio educacional gratuito
+                com voluntários dispostos a ensinar e compartilhar conhecimento.
+            </p>
+
+            <div class="hero-buttons">
+
+                <a href="loginAluno.html" class="btn btn-verde">
+                    Sou Aluno
+                </a>
+
+                <a href="loginVoluntario.html" class="btn btn-azul">
+                    Quero Ser Voluntário
+                </a>
+
+            </div>
+
+            <div class="hero-stats">
+
+                <div class="stat-card">
+                    <h3>+300</h3>
+                    <p>Alunos ajudados</p>
+                </div>
+
+                <div class="stat-card">
+                    <h3>+80</h3>
+                    <p>Voluntários</p>
+                </div>
+
+                <div class="stat-card">
+                    <h3>100%</h3>
+                    <p>Gratuito</p>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= SOBRE ================= -->
+
+    <section id="sobre" class="secao secao-clara">
+
+        <div class="secao-imagem">
+            <img src="imagens/icone1.png" alt="Sobre o projeto">
+        </div>
+
+        <div class="secao-conteudo">
+
+            <span class="mini-titulo">SOBRE O PROJETO</span>
+
+            <h2>
+                O que é o
+                <span class="texto_azul">APE?</span>
+            </h2>
+
+            <p>
+                O APE é uma plataforma social criada para conectar estudantes
+                que precisam de apoio escolar com voluntários apaixonados
+                por ensinar.
+            </p>
+
+            <p>
+                Nosso objetivo é democratizar o acesso à educação e reduzir
+                desigualdades através da colaboração.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= VOLUNTÁRIOS ================= -->
+
+    <section id="voluntarios" class="secao secao-escura reverse">
+
+        <div class="secao-conteudo">
+
+            <span class="mini-titulo verde">VOLUNTARIADO</span>
+
+            <h2>
+                Compartilhe seu
+                <span class="texto_verde">conhecimento</span>
+            </h2>
+
+            <p>
+                Ajude estudantes em Matemática, Português, Ciências,
+                História e diversas outras áreas.
+            </p>
+
+            <a href="loginVoluntario.html" class="btn btn-verde">
+                Quero Ser Voluntário
+            </a>
+
+        </div>
+
+        <div class="secao-imagem">
+            <img src="imagens/icone2.png" alt="Voluntários">
+        </div>
+
+    </section>
+
+
+    <!-- ================= ALUNOS ================= -->
+
+    <section id="alunos" class="secao secao-clara">
+
+        <div class="secao-imagem">
+            <img src="imagens/icone3.png" alt="Alunos">
+        </div>
+
+        <div class="secao-conteudo">
+
+            <span class="mini-titulo">PARA ESTUDANTES</span>
+
+            <h2>
+                Aprenda com apoio
+                <span class="texto_azul">gratuito</span>
+            </h2>
+
+            <p>
+                Encontre voluntários preparados para ajudar você em suas
+                dificuldades escolares.
+            </p>
+
+            <a href="loginAluno.html" class="btn btn-azul">
+                Quero Me Cadastrar
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= FEEDBACK ================= -->
+
+    <section id="feedback" class="feedback-section">
+
+        <div class="section-title">
+            <span>DEPOIMENTOS</span>
+            <h2>O que as pessoas dizem sobre o APE</h2>
+        </div>
+
+        <div class="feedback-grid">
+
+            <div class="feedback-card">
+                <img src="imagens/voluntario1.png" alt="Voluntário">
+                <h3>Mariana Silva</h3>
+                <p>
+                    “Ser voluntária no APE mudou minha forma de enxergar a educação.
+                    É incrível acompanhar o crescimento dos alunos.”
+                </p>
+            </div>
+
+            <div class="feedback-card destaque">
+                <img src="imagens/aluno1.png" alt="Aluno">
+                <h3>Lucas Andrade</h3>
+                <p>
+                    “Melhorei minhas notas e ganhei confiança nos estudos.
+                    Os voluntários realmente fazem diferença.”
+                </p>
+            </div>
+
+            <div class="feedback-card">
+                <img src="imagens/voluntario2.png" alt="Voluntário">
+                <h3>Paulo Santos</h3>
+                <p>
+                    “Ensinar no APE é uma experiência transformadora.
+                    A plataforma conecta pessoas incríveis.”
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= COMO FUNCIONA ================= -->
+
+    <section id="como-funciona" class="como-funciona">
+
+        <div class="section-title">
+            <span>COMO FUNCIONA</span>
+            <h2>Seu caminho dentro do APE</h2>
+        </div>
+
+        <div class="steps">
+
+            <div class="step-card">
+                <div class="step-number">1</div>
+                <h3>Cadastro</h3>
+                <p>Crie sua conta gratuitamente.</p>
+            </div>
+
+            <div class="step-card">
+                <div class="step-number">2</div>
+                <h3>Conexão</h3>
+                <p>Encontramos perfis compatíveis.</p>
+            </div>
+
+            <div class="step-card">
+                <div class="step-number">3</div>
+                <h3>Aulas</h3>
+                <p>Aprenda online com suporte voluntário.</p>
+            </div>
+
+            <div class="step-card">
+                <div class="step-number">4</div>
+                <h3>Evolução</h3>
+                <p>Acompanhamos seu progresso.</p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= MATERIAIS ================= -->
+
+    <section id="materiais" class="materiais-section">
+
+        <div class="section-title dark">
+            <span>MATERIAIS GRATUITOS</span>
+            <h2>Áreas disponíveis</h2>
+        </div>
+
+        <div class="materiais-grid">
+
+            <div class="material-card">
+                <h3>📘 Português</h3>
+                <p>Leitura, interpretação e redação.</p>
+            </div>
+
+            <div class="material-card">
+                <h3>🧮 Matemática</h3>
+                <p>Exercícios e reforço escolar.</p>
+            </div>
+
+            <div class="material-card">
+                <h3>🔤 Ingles</h3>
+                <p>Aprendizado prático e intuitivo.</p>
+            </div>
+
+            <div class="material-card">
+                <h3>📝 Redação</h3>
+                <p>Entenda o mundo e a sociedade.</p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= CONTATO ================= -->
+
+   
+    <!-- ================= FOOTER ================= -->
+
+    <!-- ================= FOOTER ================= -->
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <!-- LOGO -->
+        <div class="footer-brand">
+
+            <div class="footer-logo">
+                
+
+                <div class="logo-box">
+                    <img src="imagens/icone1.png" alt="APE" width="35">
+                </div>
+
+                <div>
+                    <h3>APE</h3>
+                    <p>Apoio Para Educação</p>
+                </div>
+
+            </div>
+
+            <span class="copyright"> 
+                © 2025 APE. Todos os direitos reservados. <br><br> Patrocinadores: <br>Centro Universitário Frassinetti do Recife - UNIFAFIRE <br>e Curso de Análise e Desenvolvimento de Sistemas
+            </span>
+
+        </div>
+
+        <!-- LINKS -->
+        <div class="footer-links">
+
+            <h4>Links</h4>
+
+            <a href="#sobre">Sobre</a>
+            <a href="#voluntarios">Voluntários</a>
+            <a href="#feedback">Depoimentos</a>
+
+        </div>
+
+        <!-- CONTATO -->
+        <div class="footer-links">
+
+            <h4>Contato</h4>
+            <a href="#">Equipe Desenvolvimento: Jean Carlos, Matheus Vinícius,<br> Thiago Luiz, Achilles Borges</a>
+            <a href="#">Falar com a gente</a>
+            <a href="#">apoioparaeducacao@gmail.com</a>
+            <a href="#">(81) 98342-2009</a>
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+    <!-- ================= SCRIPT ================= -->
+
+    <script>
+
+        const menuToggle = document.getElementById('menu-toggle');
+        const menuList = document.getElementById('menu-list');
+
+        menuToggle.addEventListener('click', () => {
+            menuList.classList.toggle('ativo');
+            menuToggle.classList.toggle('aberto');
+        });
+
+    </script>
+
+</body>
+</html>
+
+

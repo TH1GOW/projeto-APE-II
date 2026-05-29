@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APE Aluno - Área de Estudos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Supabase CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-[#F1F5F9] text-[#1E293B] h-screen flex overflow-hidden">
+    <div id="auth-container" class="fixed inset-0 z-[100] login-gradient flex items-center justify-center p-4 overflow-y-auto">
+        <div class="w-full max-w-lg my-auto">
+<div class="text-center mb-8 mt-8">
+                <div class="inline-flex bg-sky-500 p-3 rounded-2xl text-white mb-4 shadow-xl shadow-sky-900/20">
+                    <i data-lucide="graduation-cap" size="32"></i>
+                </div>
+                <h1 class="text-3xl font-black text-white tracking-tighter italic">APE ALUNO</h1>
+                <p class="text-indigo-200 font-medium mt-2">Sua plataforma de estudos gratuita</p>
+            </div>
+
+            <!-- Card de Login -->
+            <div id="login-card" class="bg-white rounded-[2.5rem] p-8 shadow-2xl space-y-6 animate-fade-in max-w-md mx-auto">
+                <div class="space-y-2">
+                    <h2 class="text-xl font-black text-slate-900">Olá, Estudante! 📚</h2>
+                    <p class="text-slate-500 text-sm font-medium">Faça login para acessar suas aulas e materiais.</p>
+                </div>
+
+                <form class="space-y-4" onsubmit="handleLoginReal(event)">
+                    <div class="space-y-1.5">
+                        <label class="text-xs font-black text-slate-400 uppercase tracking-wider ml-1">E-mail</label>
+                        <div class="relative">
+                            <i data-lucide="mail" class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300" size="18"></i>
+                            <input type="email" required placeholder="seu@email.com" class="w-full bg-slate-50 border border-slate-100 rounded-2xl py-3.5 pl-12 pr-4 text-sm focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 outline-none transition-all">
+                        </div>
+                    </div>
+
+                    <div class="space-y-1.5">
+                        <div class="flex justify-between items-center px-1">
+                            <label class="text-xs font-black text-slate-400 uppercase tracking-wider">Senha</label>
+                            <a href="#" class="text-[10px] font-bold text-sky-600 hover:underline">Esqueceu?</a>
+                        </div>
+                        <div class="relative">
+                            <i data-lucide="lock" class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300" size="18"></i>
+                            <input type="password" required placeholder="••••••••" class="w-full bg-slate-50 border border-slate-100 rounded-2xl py-3.5 pl-12 pr-4 text-sm focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 outline-none transition-all">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full bg-sky-500 hover:bg-sky-600 text-white py-4 rounded-2xl font-black shadow-lg shadow-sky-200 transition-all active:scale-[0.98] flex items-center justify-center gap-2">
+                        ENTRAR PARA ESTUDAR <i data-lucide="arrow-right" size="18"></i>
+                    </button>
+                </form>
+
+                <div class="pt-4 text-center border-t border-slate-50">
+                    <p class="text-xs font-bold text-slate-400">Ainda não tem conta? <a href="cadastroAluno.html" class="text-sky-600 hover:underline inline-block">Cadastre-se grátis</a></p>
+                </div>
+            </div>
+
+            
+        </div>
+    </div>
+    <script src="js/supabase.js"></script>
+    <script src="js/aluno-auth.js"></script>
+</body>
+</html>

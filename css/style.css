@@ -1,0 +1,55 @@
+body { font-family: 'Inter', sans-serif; }
+.custom-scrollbar::-webkit-scrollbar { width: 6px; }
+.custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+.custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+.active-nav { background: #0ea5e9; color: white; box-shadow: 0 10px 15px -3px rgba(14, 165, 233, 0.2); }
+.hidden-section { display: none !important; }
+
+.login-gradient {
+    background: radial-gradient(circle at top right, #312e81, #0f172a);
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.difficulty-card:checked + label {
+    border-color: #0ea5e9;
+    background-color: #f0f9ff;
+    color: #0284c7;
+}
+
+.item-card {
+    background: #ffffff;
+    transition: all 0.2s;
+}
+.item-card:hover {
+    transform: translateX(4px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+.border-left-math { border-left: 6px solid #ef4444; }
+.border-left-port { border-left: 6px solid #eab308; }
+.border-left-eng { border-left: 6px solid #3b82f6; }
+.border-left-hist { border-left: 6px solid #a855f7; }
+.border-left-red { border-left: 6px solid #10b981; }
+
+.discipline-card:checked + label {
+    border-color: #2563eb;
+    background-color: #eff6ff;
+    color: #1e40af;
+}
+
+.class-card {
+    border-left: 6px solid #2563eb;
+    background: #ffffff;
+    transition: all 0.2s;
+}
+.class-card:hover {
+    transform: translateX(4px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
